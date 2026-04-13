@@ -6,7 +6,7 @@ import psutil
 from futoshiki import Futoshiki
 from solver.backtracking import BacktrackingSolver
 from solver.brute_force import BruteForceSolver
-
+from solver.astar import AStarSolver
 
 class FutoshikiGUI:
     # Color palette
@@ -382,7 +382,8 @@ class FutoshikiGUI:
                         self.execute_solver(self.game.solve_backward_chaining, "Backward Chaining")
 
                     elif self.btn_astar_rect.collidepoint(pos):
-                        self.execute_solver(self.game.solve_astar, "A* Search")
+                        solver = AStarSolver(self.game)
+                        self.execute_solver(solver.solve, "A* Search")
 
                     elif self.btn_sat_rect.collidepoint(pos):
                         self.execute_solver(self.game.solve_sat, "CNF / SAT")
