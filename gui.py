@@ -7,7 +7,7 @@ from futoshiki import Futoshiki
 from solver.backtracking import BacktrackingSolver
 from solver.brute_force import BruteForceSolver
 from solver.astar import AStarSolver
-
+from solver.sat_solve import SATSolver
 class FutoshikiGUI:
     # Color palette
     BG_COLOR = (245, 247, 252)
@@ -386,7 +386,8 @@ class FutoshikiGUI:
                         self.execute_solver(solver.solve, "A* Search")
 
                     elif self.btn_sat_rect.collidepoint(pos):
-                        self.execute_solver(self.game.solve_sat, "CNF / SAT")
+                        solver = SATSolver(self.game)
+                        self.execute_solver(solver.solve, "CNF / SAT")
                     # -------------------------------------------------------------
 
                     else:
