@@ -8,6 +8,8 @@ from solver.backtracking import BacktrackingSolver
 from solver.brute_force import BruteForceSolver
 from solver.astar import AStarSolver
 from solver.sat_solve import SATSolver
+from solver.forward import ForwardCheckingSolver
+from solver.backward import BackwardCheckingSolver
 class FutoshikiGUI:
     # Color palette
     BG_COLOR = (245, 247, 252)
@@ -71,9 +73,32 @@ class FutoshikiGUI:
         self.errors = []
         self.selected_cell = None
 
-        self.CELL_SIZE = 60
-        self.CON_SIZE = 20
-        self.MARGIN = 30
+        # --- DYNAMIC SCALING START ---
+        if self.N <= 5:
+            self.CELL_SIZE = 60
+            self.CON_SIZE = 20
+            self.MARGIN = 30
+            self.btn_size = 52
+            # Re-scale fonts for normal size
+            self.font = pygame.font.SysFont("Helvetica, Arial", 32, bold=True)
+            self.con_font = pygame.font.SysFont("Helvetica, Arial", 24, bold=True)
+        elif self.N <= 7:
+            self.CELL_SIZE = 45
+            self.CON_SIZE = 15
+            self.MARGIN = 25
+            self.btn_size = 44
+            # Shrink fonts slightly
+            self.font = pygame.font.SysFont("Helvetica, Arial", 26, bold=True)
+            self.con_font = pygame.font.SysFont("Helvetica, Arial", 18, bold=True)
+        else: 
+            # For 8x8, 9x9 and above: significantly shrink to fit the screen
+            self.CELL_SIZE = 35
+            self.CON_SIZE = 12
+            self.MARGIN = 15
+            self.btn_size = 36
+            self.font = pygame.font.SysFont("Helvetica, Arial", 20, bold=True)
+            self.con_font = pygame.font.SysFont("Helvetica, Arial", 14, bold=True)
+        # --- DYNAMIC SCALING END ---
 
         self.LEVEL_PANEL_W = 160
 
@@ -89,7 +114,7 @@ class FutoshikiGUI:
         self.col2_w = max(self.BOARD_W, self.total_sol_w)
 
         self.numpad_cols = 3 if self.N >= 5 else 2
-        self.btn_size = 52
+        # REMOVE the old self.btn_size = 52 from here since we set it above dynamically!
         self.numpad_gap = 10
         self.NUMPAD_W = self.btn_size * self.numpad_cols + self.numpad_gap * (self.numpad_cols - 1)
 
@@ -376,9 +401,11 @@ class FutoshikiGUI:
                         self.execute_solver(solver.solve, "Backtracking")
 
                     elif self.btn_fc_rect.collidepoint(pos):
-                        self.execute_solver(self.game.solve_forward_chaining, "Forward Chaining")
+                        solver = ForwardCheckingSolver(self.game)
+                        self.execute_solver(solver.solve, "Forward Chaining")
 
                     elif self.btn_bc_rect.collidepoint(pos):
+                        solver = BackwardCheckingSolver(self.game)
                         self.execute_solver(self.game.solve_backward_chaining, "Backward Chaining")
 
                     elif self.btn_astar_rect.collidepoint(pos):
