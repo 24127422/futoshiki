@@ -406,7 +406,7 @@ class FutoshikiGUI:
 
                     elif self.btn_bc_rect.collidepoint(pos):
                         solver = BackwardCheckingSolver(self.game)
-                        self.execute_solver(self.game.solve_backward_chaining, "Backward Chaining")
+                        self.execute_solver(solver.solve, "Backward Chaining")
 
                     elif self.btn_astar_rect.collidepoint(pos):
                         solver = AStarSolver(self.game)
