@@ -313,7 +313,7 @@ class FutoshikiGUI:
         self.draw_button("Forward Ch.", self.btn_fc_rect)
         self.draw_button("Backward Ch.", self.btn_bc_rect)
         self.draw_button("A*", self.btn_astar_rect)
-        self.draw_button("CNF", self.btn_sat_rect)
+        self.draw_button("CNF / SAT", self.btn_sat_rect)
 
         pygame.display.flip()
 
