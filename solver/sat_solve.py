@@ -42,5 +42,8 @@ class SATSolver:
                     if lit > 0:
                         i, j, v = enc.decode(lit)
                         self.game.board[i-1][j-1] = v
-                return True
-            return False
+
+                stats = solver.accum_stats()
+                expansions = stats.get('decisions', len(clauses))
+                return True, expansions
+            return False, 0

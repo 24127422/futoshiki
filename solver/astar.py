@@ -5,6 +5,7 @@ class AStarSolver:
     def __init__(self, game):
         self.game = game
         self.N = game.size
+        self.expansions = 0
 
     def get_empty_cell(self, board): #tìm ô trống đầu tiên
         for r in range(self.N):
@@ -23,6 +24,7 @@ class AStarSolver:
 
     def solve(self):
         # Trạng thái ban đầu
+        self.expansions = 0
         initial_board = copy.deepcopy(self.game.board)
 
         pq = []
@@ -35,6 +37,8 @@ class AStarSolver:
         heapq.heappush(pq, (f_initial, h_initial, tie_breaker, initial_board))
 
         while pq:
+            self.expansions += 1
+
             # Lấy trạng thái có f(n) nhỏ nhất ra (Nếu f bằng nhau, lấy h nhỏ nhất)
             f, h, _, current_board = heapq.heappop(pq)
             
@@ -45,7 +49,7 @@ class AStarSolver:
                 for r in range(self.N):
                     for c in range(self.N):
                         self.game.board[r][c] = current_board[r][c]
-                return True
+                return True, self.expansions
                 
             r, c = empty_cell
             
@@ -67,4 +71,4 @@ class AStarSolver:
                     # Đẩy state mới vào hàng đợi
                     heapq.heappush(pq, (f_new, h_new, tie_breaker, new_board))
 
-        return False
+        return False, self.expansions

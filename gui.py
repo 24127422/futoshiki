@@ -317,7 +317,7 @@ class FutoshikiGUI:
 
         pygame.display.flip()
 
-    def save_output(self, solver_name, time_taken, memory_mb):
+    def save_output(self, solver_name, time_taken, memory_mb, expansions):
         os.makedirs("Outputs", exist_ok=True)
         filename = f"Outputs/output-{self.current_level:02d}.txt"
 
@@ -333,6 +333,7 @@ class FutoshikiGUI:
         print(f"  > Status: Solved & Saved to {filename}")
         print(f"  > Execution Time: {time_taken:.6f} seconds")
         print(f"  > RAM Consumption: {memory_mb:.4f} MB")
+        print(f"  > Expansions/Inferences: {expansions}")
         print("=" * 40 + "\n")
 
     def execute_solver(self, solver_func, solver_name):
@@ -343,7 +344,7 @@ class FutoshikiGUI:
 
         start_time = time.perf_counter()
 
-        solver_func()
+        is_solved, expansions = solver_func()
 
         end_time = time.perf_counter()
 
@@ -355,7 +356,7 @@ class FutoshikiGUI:
         self.selected_cell = None
         self.errors = self.game.get_errors()
 
-        self.save_output(solver_name, time_taken, memory_used_mb)
+        self.save_output(solver_name, time_taken, memory_used_mb, expansions)
 
     def run(self):
         running = True

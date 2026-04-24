@@ -4,8 +4,10 @@ class ForwardCheckingSolver:
     def __init__(self, game):
         self.game = game
         self.size = game.size
+        self.expansions = 0
 
     def solve(self):
+        self.expansions = 0
         empty_cells = []
         for r in range(self.size):
             for c in range(self.size):
@@ -15,7 +17,7 @@ class ForwardCheckingSolver:
         
         domains = {cell: list(range(1, self.size + 1)) for cell in empty_cells}
         
-        return self._solve_fc(0, empty_cells, domains)
+        return self._solve_fc(0, empty_cells, domains), self.expansions
 
     def _solve_fc(self, index, empty_cells, domains):
         if index == len(empty_cells):
@@ -24,7 +26,8 @@ class ForwardCheckingSolver:
         r, c = empty_cells[index]
 
         for val in domains[(r, c)]:
-            
+            self.expansions += 1
+
             if self.game.is_valid(r, c, val):
                 self.game.board[r][c] = val
 
