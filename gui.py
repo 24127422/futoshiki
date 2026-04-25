@@ -317,20 +317,24 @@ class FutoshikiGUI:
 
         pygame.display.flip()
 
-    def save_output(self, solver_name, time_taken, memory_mb, expansions):
+    def save_output(self, solver_name, time_taken, memory_mb, expansions, is_solved):
         os.makedirs("Outputs", exist_ok=True)
         filename = f"Outputs/output-{self.current_level:02d}.txt"
 
-        try:
-            with open(filename, "w", encoding="utf-8") as f:
-                for row in self.game.board:
-                    f.write(",".join(map(str, row)) + "\n")
-        except Exception as e:
-            print(f"Lỗi khi ghi file: {e}")
-
         print("\n" + "=" * 40)
         print(f"LEVEL {self.current_level} - ALGORITHM: {solver_name}")
-        print(f"  > Status: Solved & Saved to {filename}")
+        
+        if is_solved:
+            try:
+                with open(filename, "w", encoding="utf-8") as f:
+                    for row in self.game.board:
+                        f.write(",".join(map(str, row)) + "\n")
+            except Exception as e:
+                print(f"Lỗi khi ghi file: {e}")
+            print(f"  > Status: Solved & Saved to {filename}")
+        else:
+            print(f"  > Status: ERROR - Unsolvable Board! ")
+
         print(f"  > Execution Time: {time_taken:.6f} seconds")
         print(f"  > RAM Consumption: {memory_mb:.4f} MB")
         print(f"  > Expansions/Inferences: {expansions}")
@@ -343,7 +347,6 @@ class FutoshikiGUI:
         mem_before = process.memory_info().rss
 
         start_time = time.perf_counter()
-
         is_solved, expansions = solver_func()
 
         end_time = time.perf_counter()
@@ -356,7 +359,8 @@ class FutoshikiGUI:
         self.selected_cell = None
         self.errors = self.game.get_errors()
 
-        self.save_output(solver_name, time_taken, memory_used_mb, expansions)
+        
+        self.save_output(solver_name, time_taken, memory_used_mb, expansions, is_solved)
 
     def run(self):
         running = True
