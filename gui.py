@@ -61,7 +61,7 @@ class FutoshikiGUI:
         filename = f"Inputs/input-{self.current_level:02d}.txt"
 
         if not os.path.exists(filename):
-            print(f"Lỗi: Không tìm thấy file {filename}")
+            print(f"Error: File not found {filename}")
             sys.exit()
 
         self.game = Futoshiki(filename)
@@ -73,7 +73,6 @@ class FutoshikiGUI:
         self.errors = []
         self.selected_cell = None
 
-        # --- DYNAMIC SCALING START ---
         if self.N <= 5:
             self.CELL_SIZE = 60
             self.CON_SIZE = 20
@@ -98,7 +97,7 @@ class FutoshikiGUI:
             self.btn_size = 36
             self.font = pygame.font.SysFont("Helvetica, Arial", 20, bold=True)
             self.con_font = pygame.font.SysFont("Helvetica, Arial", 14, bold=True)
-        # --- DYNAMIC SCALING END ---
+        
 
         self.LEVEL_PANEL_W = 160
 

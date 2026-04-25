@@ -48,11 +48,11 @@ class Futoshiki:
                 self.vertical_cons.append(v_cons)
                 idx += 1
 
-            print(f"Đã tải thành công file '{filename}' (Size: {self.size}x{self.size})")
+            print(f"Load file success '{filename}' (Size: {self.size}x{self.size})")
         except FileNotFoundError:
-            print(f"Lỗi: Không tìm thấy file {filename}")
+            print(f"File not found: {filename}")
         except Exception as e:
-            print(f"Lỗi khi đọc file: {e}")
+            print(f"Error occurred while reading file: {e}")
 
     def is_valid(self, row, col, num):
         """Kiểm tra xem số num điền vào ô (row, col) có hợp lệ không."""
